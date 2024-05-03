@@ -1,0 +1,400 @@
+.wmenu {
+/*	--bg1-color: rgb(250, 250, 250);*/
+/*  --bg2-color: #f2f2f2;*/
+/*  --bg3-color: white;*/
+/*  --border-color: silver;*/
+/*  --text-color: rgb(60,60,60);*/
+/*  --accent: skyblue;*/
+/*  --accent-text: rgb(40, 40, 40);*/
+/*  --menu-height: 45px;*/
+}
+
+@media (prefers-color-scheme: dark) {
+  .wmenu {
+/*    --bg1-color: rgb(20, 20, 20);*/
+/*    --bg2-color: rgb(40,40,40);*/
+/*    --bg3-color: rgb(60, 60, 60);*/
+/*    --border-color: dimgray;*/
+/*    --text-color: rgb(240, 240, 240);*/
+/*    --accent: dodgerblue;*/
+/*    --accent-text: white;*/
+  }
+}
+
+.wmenu {
+
+/****** Backgrounds ******/
+	background-color: var(--bg2-color);
+
+	& label:has(input:checked)::after,
+	& label:has(input:checked)::before {
+		background-color: var(--bg2-color);
+	}
+
+  & li > menu
+  { background: var(--bg3-color); }
+
+	& li:not(:has(input:checked)):hover {
+		background-image: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(0,0,0,0.2));
+	}
+
+	& li:not(:has(input:checked)):active {
+		background-image: linear-gradient(to top, rgba(255,255,255,0.2), rgba(0,0,0,0.2));
+	}
+
+/****** Borders ******/
+
+	& li
+	{ border: solid var(--border-color); }
+
+	& li
+	{ border-width: 1px 0 0 0; }
+
+	& li:first-child
+	{ border-width: 0; }
+
+	& menu
+	{ border-radius: 1rem 0 0 1rem; }
+
+	& li li:first-child
+	{ border-radius: 1rem 0 0 0; }
+
+	& li:last-child
+	{ border-radius:0 0 0 1rem }
+
+/****** Text ******/
+
+	& a,
+	& input[type=checkbox],
+	& input[type=radio]
+	{ color: var(--text-color) }
+
+	& a:active,
+  & a:hover,
+  & label:active,
+  & label:hover a,
+  & label:hover input,
+  & li label:has(input:checked) > a,
+  & li label:has(input:checked) > input
+  { color: var(--accent-text); }
+
+	& a,
+	& input[type=checkbox],
+	& input[type=radio]
+	{ font-weight: bold; }
+
+	& input[type=checkbox],
+	& input[type=radio]
+	{ font-size: 1.5rem }
+
+	& a
+	{ text-decoration: none }
+
+	& a[href]:hover
+	{ text-decoration: underline; }
+
+/****** Shadows ******/
+
+	& a[href]:active {
+		box-shadow: inset 1px 1px 5px black;
+	}
+
+/****** Cursors ******/
+
+		& label,
+		& input[type=checkbox],
+		& input[type=radio]
+		{ cursor: pointer }
+
+/****** Structure ******/
+	margin: 0;
+	padding: 0;
+	width: 100%;
+
+	& a {
+		text-align: left;
+		flex: 1;
+		padding: .5rem;
+	}
+
+	& input[type=checkbox],
+	& input[type=radio] {
+		appearance: none;
+		aspect-ratio: 1/1;
+		display: inline-block;
+		position: relative;
+		transition: all .25s;
+		vertical-align: middle;
+		width: 1.5rem;
+	}
+
+	& input[type=checkbox]:checked,
+	& input[type=radio]:checked {
+		transform: rotate(90deg);
+	}
+
+	& input[type=checkbox]:before,
+	& input[type=radio]:before {
+		align-items: center;
+		content: "▶";
+		display: flex;
+		justify-content: center;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+
+	& label {
+		align-items: center;
+		display: flex;
+		justify-content: start;
+		flex: 2;
+	}
+
+	& label:has(input:checked) {
+		flex: 0;
+	}
+
+	& label > a {
+		flex: 0;
+		min-width: max-content;
+	}
+
+	& label:has(input) + menu{
+		max-height: 0rem;
+	}
+
+	& label:has(input) + menu {
+		flex: 0;
+	}
+
+	& label:has(input:checked) + menu {
+		flex: 2;
+		max-height: 1000vh;
+		overflow: visible;
+		z-index: 100;
+	}
+
+	& li {
+		align-content: center;
+		align-items: stretch; /* for menu with single li */
+		display: flex;
+		flex-wrap: wrap;
+		min-height: var(--menu-height);
+		overflow: hidden;
+		position: relative;
+	}
+
+	& li > menu {
+		max-height: 0%;
+		overflow: hidden;
+	}
+
+	& li > menu > li {
+		width: max-content;
+		min-width: 100%;
+	}
+
+	& menu {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		transition: all .5s;
+	}
+
+	& menu, ul, ol {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+} /** .wmenu **/
+
+.wmenu.inset li > menu {
+	box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.wmenu.curly {
+	& label:has(input:checked) {
+		background-color: var(--bg3-color);
+		border: none;
+		display: inline-block;
+		margin: auto 0;
+		min-width: 10rem;
+	}
+
+	& label:has(input:checked)::after,
+	& label:has(input:checked)::before {
+		color: transparent;
+		content: ".";
+		display: inline-block;
+		width: 100%;
+		height: 4rem;
+	}
+
+	& label:has(input:checked)::before {
+		border-radius: 0 0 1rem 0;
+	}
+
+	& label:has(input:checked)::after {
+		border-radius: 0 1rem 0 0;
+	}
+
+	& menu label:has(input:checked) {
+		background-color: var(--bg2-color);
+		border-radius: 1rem;
+	}
+
+	& menu label:has(input:checked)::after {
+		background-color: var(--bg3-color);
+		border-radius: 1rem 0 0 0;
+	}
+
+	& menu label:has(input:checked)::before {
+		background-color: var(--bg3-color);
+		border-radius: 0 0 0 .5rem;
+	}
+
+	& li li a {
+		padding-left: 1.5rem;
+	}
+}
+
+.wmenu.ribbon {
+	background-color: transparent;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	position: relative;
+	z-index: 0;
+
+	& label a {
+		flex: 1;
+	}
+
+	& li {
+		border-radius: 0;
+		border-width: 0 0 0 1px;
+		position: static;
+	}
+
+	& li:first-child {
+		border-width: 0;
+	}
+
+	& label:has(input:checked) + menu,
+	& li:has(label):hover > menu {
+		border: 1px solid var(--border-color);
+		max-height: 1000vh;
+		overflow: visible;
+		z-index: 100;
+	}
+
+	& li:has(label):hover > label > input[type=checkbox],
+	& li:has(label):hover > label > input[type=radio] {
+		transform: rotate(90deg);
+	}
+
+	& label + menu
+	{
+		left: 0;
+		max-height: 0;
+		overflow: hidden;
+		position: absolute;
+		top: var(--menu-height);
+		width: 100%;
+		z-index: -1;
+	}
+
+	& li > menu > li {
+		width: max-content;
+		min-width: auto;
+	}
+
+	& menu {
+		border-radius: 1rem;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		box-shadow: 2px 2px 10px black;
+	}
+
+	& menu > li {
+		position: static;
+	}
+
+} /** .wmenu.ribbon **/
+
+.wmenu.oldschool {
+
+	background-color: transparent;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	position: relative;
+	z-index: 1;
+
+	> li:last-child {
+		border-width: 0;
+	}
+
+	& label a {
+		flex: 1;
+	}
+
+	& > li {
+		border-radius: 0;
+		border-width: 0 1px 0 0;
+		position: relative;
+		overflow: visible;
+	}
+
+	& li li:first-child {
+		border-radius: 1rem 1rem 0 0;
+	}
+
+	& label:has(input:checked) + menu,
+	& li:has(label):hover > menu {
+		border: 1px solid var(--border-color);
+		max-height: 1000vh;
+		overflow: visible;
+		z-index: 100;
+	}
+
+	& li:has(label):hover > label > input[type=checkbox],
+	& li:has(label):hover > label > input[type=radio] {
+		transform: rotate(90deg);
+	}
+
+	& li > menu {
+		left: 0;
+		max-height: 0;
+		min-width: 100%;
+		overflow: hidden;
+		position: absolute;
+		top: var(--menu-height);
+		z-index: -1;
+	}
+
+	& li > menu > li {
+		border-radius: 0;
+	}
+
+	& li > menu > li > menu {
+		left: 100%;
+		top: -100%;
+	}
+
+	& menu {
+		border-radius: 1rem;
+		box-shadow: 2px 2px 10px black;
+	}
+
+	& menu > li {
+		position: relative;
+		overflow: visible;
+	}
+
+} /** .wmenu.oldschool **/

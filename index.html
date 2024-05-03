@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wijit-Menu</title>
+    <script defer src="extra/scripts.js"></script>
+    <script type="module" src="extra/wijit-form.min.js"></script>
+    <script type="module" src="src/wijit-reveal.js"></script>
+    <link rel="stylesheet" href="extra/styles.css">
+    <link rel="stylesheet" href="extra/menu.css">
+    <style>
+        wijit-reveal[active]::part(icon),
+        wijit-reveal::part(icon):hover {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Wijit-Reveal</h1>
+        <h4>A web component that displays a user-definable element (such as an icon) which reveals another element when clicked.</h4>
+    </header>
+
+    <details>
+        <summary>Readme</summary>
+        <div id="instructions"></div>
+    </details>
+
+    <h2>Demo</h2>
+    <wijit-form>
+
+        <section class="row">
+            <section class="start">
+
+                <div>
+                    <label for="demo-icon-slot">icon</label>
+                    <select id="demo-icon-slot">
+                        <option value="default">Default</option>
+                        <option value="none">None</option>
+                        <option value="button">Button</option>
+                        <option value="image">Image</option>
+                    </select>
+                </div>
+
+                <fieldset>
+                <legend>Attributes</legend>
+
+                    <section class="row">
+                        <div>
+                            <label for="demo-active">active</label>
+                            <input type="checkbox" id="demo-active" onchange="change(event, 'active')">
+                        </div>
+
+                        <div>
+                            <label for="demo-toggle">toggle</label>
+                            <input type="checkbox" id="demo-toggle" onchange="change(event, 'toggle')">
+                        </div>
+                    </section>
+
+                    <div>
+                        <label for="demo-height">height</label>
+                        <select id="demo-height" onchange="change(event, height'')">
+                            <option selected value="45px">45px (Default)</option>
+                            <option>20px</option>
+                            <option>4rem</option>
+                            <option>100%</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="demo-speed">speed</label>
+                        <select id="demo-speed-css" onchange="change(event, 'speed')">
+                            <option selected value=".5s">.5s (Default)</option>
+                            <option>250ms</option>
+                            <option>1s</option>
+                            <option>2</option>
+                        </select>
+                    </div>
+
+                    <section class="row">
+                        <div>
+                            <label for="demo-orient">orient</label>
+                            <select size="4" onchange="change(event, 'orient')">
+                                <option selected value="row">row (default)</option>
+                                <option>row-reverse</option>
+                                <option>column</option>
+                                <option>column-reverse</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="demo-align">align</label>
+                            <select size="4" id="demo-align" onchange="change(event, 'align')">
+                                <option selected value="start">start (Default)</option>
+                                <option>end</option>
+                                <option>center</option>
+                                <option>stretch</option>
+                            </select>
+                        </div>
+                    </section>
+                </fieldset>
+            </section>
+
+            <fieldset class="start">
+            <legend>CSS Properties</legend>
+
+                <div>
+                    <label for="demo-height-css">height</label>
+                    <select id="demo-height-css" onchange="change(event, '--height')">
+                        <option value="45px">45px (Default)</option>
+                        <option>20px</option>
+                        <option>4rem</option>
+                        <option>100%</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="demo-speed-css">speed</label>
+                    <select id="demo-speed-css" onchange="change(event, '--speed')">
+                        <option value=".5s">.5s (Default)</option>
+                        <option>250ms</option>
+                        <option>1s</option>
+                        <option>2</option>
+                    </select>
+                </div>
+
+                <section class="row">
+                    <div>
+                        <label for="demo-orient-css">orient</label>
+                        <select size="4" id="demo-orient-css" onchange="change(event, '--orient')">
+                            <option>column</option>
+                            <option>column-reverse</option>
+                            <option>row</option>
+                            <option>row-reverse</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="demo-align-css">align</label>
+                        <select size="4" id="demo-align-css" onchange="(event, '--align')">
+                            <option>start</option>
+                            <option>end</option>
+                            <option>center</option>
+                            <option>stretch</option>
+                        </select>
+                    </div>
+                </section>
+            </fieldset>
+        </section>
+    </wijit-form>
+
+    <!-- <section>
+        <wijit-reveal>
+            <menu>
+                <li><a href="">Foo</a></li>
+                <li><a href="">Bar</a></li>
+                <li><a href="">Baz</a></li>
+            </menu>
+        </wijit-reveal>
+    </section> -->
+
+    <h2>Examples</h2>
+    <!-- <section class="column">
+        <div class="card">
+            <header><h4>Horizontal Menu</h4></header>
+
+            <wijit-reveal orient="row" align="start">
+                <menu class="wmenu ribbon">
+                    <li>
+                        <a href="#">Home</a>
+                    </li>
+                    <li>
+                        <label>
+                            <a href="#">About Us</a>
+                            <input aria-hidden="true" type="checkbox" name="menu1">
+                        </label>
+                        <menu>
+                            <li> <a href="#">About 1</a> </li>
+                            <li> <a href="#">About 2</a> </li>
+                            <li> <a href="#">About 3</a> </li>
+                            <li> <a href="#">About 4</a> </li>
+                            <li> <a href="#">About 5</a> </li>
+                            <li> <a href="#">About 6</a> </li>
+                        </menu>
+                    </li>
+                    <li>
+                        <label>
+                            <a href="#">Services</a>
+                            <input aria-hidden="true" type="checkbox" name="menu1">
+                        </label>
+                        <menu>
+                            <li> <a href="#">Services 1</a> </li>
+                            <li> <a href="#">Services 2</a> </li>
+                            <li>
+                                <label>
+                                    <input aria-hidden="true" type="checkbox" name="menu1">
+                                    <a href="#">Portfolio</a>
+                                </label>
+                                <menu>
+                                    <li> <a href="#">Example One</a></li>
+                                    <li> <a href="#">Example Two</a></li>
+                                    <li> <a href="#">Example Three</a></li>
+                                    <li> <a href="#">Example Four</a></li>
+                                    <li> <a href="#">Example Five</a></li>
+                                    <li> <a href="#">Example Six</a></li>
+                                    <li> <a href="#">Example Seven</a></li>
+                                </menu>
+                            </li>
+                        </menu>
+                    </li>
+                    <li><a href="#">Downloads</a></li>
+                    <li><a href="#">Support</a></li>
+                </menu>
+            </wijit-reveal>
+        </div>
+
+        <div class="card">
+            <header><h4>Vertical Menu</h4></header>
+
+            <wijit-reveal active orient="column" align="center">
+                <menu class="wmenu">
+                    <li>
+                        <a href="#">Home</a>
+                    </li>
+                    <li>
+                        <label>
+                            <input aria-hidden="true" type="checkbox" name="level1">
+                            <a href="#">About Us</a>
+                        </label>
+                        <menu>
+                            <li> <a href="#">About 1</a> </li>
+                            <li> <a href="#">About 2</a> </li>
+                            <li> <a href="#">About 3</a> </li>
+                            <li> <a href="#">About 4</a> </li>
+                            <li> <a href="#">About 5</a> </li>
+                            <li> <a href="#">About 6</a> </li>
+                        </menu>
+                    </li>
+                    <li>
+                        <label>
+                            <input aria-hidden="true" type="checkbox" name="level1">
+                            <a>Services</a>
+                        </label>
+                        <menu>
+                            <li> <a href="#">Services 1</a> </li>
+                            <li> <a href="#">Services 2</a> </li>
+                            <li>
+                                <label>
+                                    <input aria-hidden="true" type="checkbox" name="level2">
+                                    <a href="#">Portfolio</a>
+                                </label>
+                                <menu>
+                                    <li> <a href="#">Example One</a></li>
+                                    <li> <a href="#">Example Two</a></li>
+                                    <li> <a href="#">Example Three</a></li>
+                                    <li> <a href="#">Example Four</a></li>
+                                </menu>
+                            </li>
+                        </menu>
+                    </li>
+                    <li><a href="#">Downloads</a></li>
+                    <li>
+                        <label>
+                            <input type="checkbox" aria-hidden="true">
+                            <a href="#">Support</a>
+                        </label>
+                        <menu>
+                            <li><a>foo</a></li>
+                        </menu>
+                    </li>
+                </menu>
+            </wijit-reveal>
+        </div>
+    </section> -->
+</body>
+</html>
