@@ -1,18 +1,18 @@
 export class WijitReveal extends HTMLElement {
   abortController = new AbortController();
   #active = false;
-  #align = 'center';
+  #position = 'center';
   #height = '45px';
   #orient = 'row';
-  #speed = '.5s';
+  #speed = '1s';
   #toggle = true;
   allowed = {
     active: new Set([null, true, false, '', 'true', 'false']),
-    align: new Set(['center', 'end', 'start', 'stretch']),
+    position: new Set(['center', 'end', 'start', 'stretch']),
     orient: new Set(['column', 'column-reverse', 'row', 'row-reverse']),
     toggle: new Set([null, true, false, '', 'true', 'false']),
   }
-  static observedAttributes = ['active', 'align', 'height', 'orient', 'toggle', 'speed'];
+  static observedAttributes = ['active', 'position', 'height', 'orient', 'toggle', 'speed'];
 
   constructor() {
     super();
@@ -20,14 +20,12 @@ export class WijitReveal extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>
         :host {
-          --align: ${this.align};
+          --align: ${this.position};
           --height: ${this.height};
           --orient: ${this.orient};
           --speed: ${this.speed};
-        }
-
-        ::slotted(*) {
-          min-height: var(--height);
+          position: relative;
+          width: 100%;
         }
 
         label {
@@ -44,24 +42,21 @@ export class WijitReveal extends HTMLElement {
         label:has(input:checked) ~ #content {
           flex: 2;
           opacity: 1;
-          overflow: visible;
         }
 
         main {
           display: flex;
           flex-direction: var(--orient);
-          align-items: var(--align);
+          align-items: var(--position);
           gap: 1rem;
           height: 100%;
-          padding: 0 1rem;
         }
 
         #content {
-          align-self: stretch;
-          align-items: start;
+          position: relative;
+          border: 1px solid yellow;
           flex: 0;
-          max-height: var(--height);
-          opacity: 0;
+          opacity: 1;
           overflow: hidden;
           transition: all var(--speed);
         }
@@ -104,7 +99,8 @@ export class WijitReveal extends HTMLElement {
 
   attributeChangedCallback(attr, oldval, newval) {
     if (this.allowed[attr] && !this.allowed[attr].has(newval)) {
-      console.error(`Value of "${attr}" must be one of [${Array.from(this.allowed[attr].values())}]. Value given was: ${newval}`)
+      const allowed = JSON.stringify(Array.from(this.allowed[attr].values()));
+      console.error(`Value of "${attr}" must be one of ${allowed}. Value given was: ${newval}`)
       return false;
     }
     this[attr] = newval;
@@ -160,17 +156,18 @@ export class WijitReveal extends HTMLElement {
     this.#active = value;
   }
 
-  get align() { return this.#align; }
+  get position() { return this.#position; }
 
-  set align(value) {
-    this.#align = value;
-    this.style.setProperty('--align', value);
+  set position(value) {
+    this.#position = value;
+    this.style.setProperty('--position', value);
   }
 
   get height() { return this.#height; }
 
   set height(value) {
     this.#height = value;
+    this.style.setProperty('--height', value);
   }
 
   get orient() { return this.#orient; }

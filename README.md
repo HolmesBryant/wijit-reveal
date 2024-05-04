@@ -29,7 +29,7 @@ Include the custom element in the body, and add your content.
 
 ## Attributes
 - **active**
-    - Add this attribute to make the content visible.
+    - Add this attribute to make the content visible. Null, true, '' and 'true' are true. False and 'false' are false.
     - Acceptable values: [null, true, false, '', 'true', 'false']
 - **orient**
     - Determines the positional relationship between the trigger and the content. "column" places the trigger above the content. "column-reverse" places it below the content. "row" places the trigger to the left of the content. "row-reverse" places it to the right.
@@ -39,7 +39,7 @@ Include the custom element in the body, and add your content.
     - Acceptable values: ['center', 'end', 'start', 'stretch']
 - **height**
     - Determines the height/width of the icon and the minimum height of the content.
-    - Acceptable values: Any valid css height value.
+    - Acceptable values: Any valid css height value EXCEPT percentage (%).
 - **toggle**
     - Determines whether the content is hidden when you click somewhere outside of the custom element, or when you click on a link inside the custom element.
     - Acceptable values: [null, true, false, '', 'true', 'false']

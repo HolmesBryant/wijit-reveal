@@ -1,12 +1,17 @@
 function change(evt, attr) {
   const el = document.querySelector('#demo-item');
+  let value = evt.target.value;
+
+  if (evt.target.type && evt.target.type === 'checkbox') {
+    value = (event.target.checked) ? 'true' : 'false';
+  }
 
   if ( attr.startsWith( '--' ) ) {
-    el.style.setProperty(attr, evt.target.value);
+    el.style.setProperty(attr, value);
   } else if (attr === 'caption') {
     el.innerHTML = evt.target.value;
   } else {
-    el.setAttribute( attr, evt.target.value );
+    el.setAttribute( attr, value );
   }
 }
 
@@ -14,7 +19,7 @@ function change(evt, attr) {
  * Grab the README file and stick it in the "instructions" container
  */
 function getReadme () {
-  const elem = document.querySelector('#instructions');
+  const elem = document.querySelector('details#instructions > div');
   fetch ('./README.md')
   .then (response => response.text())
   .then (text => {
