@@ -26,8 +26,6 @@ export class WijitReveal extends HTMLElement {
           --speed: ${this.speed};
           position: relative;
           width: 100%;
-
-          border: 1px solid purple;
         }
 
         input + #icon:hover {
@@ -56,7 +54,6 @@ export class WijitReveal extends HTMLElement {
           flex-direction: var(--orient);
           align-items: var(--position);
           gap: 1rem;
-          height: 100%;
         }
 
         svg {
@@ -68,6 +65,7 @@ export class WijitReveal extends HTMLElement {
           flex: 0;
           opacity: 1;
           overflow: hidden;
+          position: relative;
           transition: all var(--speed);
           width: 100%;
         }
@@ -86,9 +84,9 @@ export class WijitReveal extends HTMLElement {
       <main part="main">
         <label aria-label="menu" title="menu" part="icon">
           <input hidden type="checkbox">
-          <div id="icon" part="icon" class="${this.orient} ${this.position}">
+          <div id="icon" part="icon">
             <slot name="icon">
-              <svg viewBox="0 6 12 12" preserveAspectRatio="none">
+              <svg viewBox="0 4 15 15" preserveAspectRatio="none">
                 <path fill="currentColor" d="M0 6H20V8H0V6zM0 11H20V13H0V11zM0 16H20V18H0V16z"/>
               </svg>
             </slot>

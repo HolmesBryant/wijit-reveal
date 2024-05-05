@@ -15,20 +15,19 @@
             color: var(--accent);
         }
 
-        #demo-item {
-/*            position: absolute;*/
+        #demo-section {
         }
 
-        #demo-section {
-/*            position: relative;*/
-/*            height: 100px;*/
+        #demo-item {
         }
 
         .demo-content {
             background-image: linear-gradient(mediumaquamarine, teal);
             border: 1px solid cyan;
-            height: 300px;
             white-space: nowrap;
+/*            height: 100px;*/
+/*            width: 100%;*/
+            position: absolute;
         }
 
     </style>
@@ -46,138 +45,79 @@
 
     <h2>Demo</h2>
     <wijit-form>
-        <section class="row">
-            <details open class="fb480">
-            <summary>Attributes</summary>
-                <section class="row fb640">
-                    <section class="row">
-                        <section class="row space-around">
-                            <div>
-                                <label for="demo-active">active</label>
-                                <input type="checkbox" id="demo-active" onchange="change(event, 'active')">
-                            </div>
+        <section>
+            <section class="row space-around">
+                <div>
+                    <label for="demo-active">active</label>
+                    <input type="checkbox" id="demo-active" onchange="change(event, 'active')">
+                </div>
 
-                            <div>
-                                <label for="demo-toggle">toggle</label>
-                                <input checked type="checkbox" id="demo-toggle" onchange="change(event, 'toggle')">
-                            </div>
-                        </section>
+                <div>
+                    <label for="demo-toggle">toggle</label>
+                    <input checked type="checkbox" id="demo-toggle" onchange="change(event, 'toggle')">
+                </div>
 
-                        <section>
-                            <div>
-                                <label for="demo-height">height</label>
-                                <select id="demo-height" onchange="change(event, 'height')">
-                                    <option selected value="45px">45px (Default)</option>
-                                    <option>20px</option>
-                                    <option>4rem</option>
-                                    <option>4em</option>
-                                    <option>10vh</option>
-                                    <option>10vw</option>
-                                </select>
-                            </div>
+                <div>
+                    <label for="demo-height">height</label>
+                    <select id="demo-height" onchange="change(event, 'height')">
+                        <option selected value="45px">45px (Default)</option>
+                        <option>20px</option>
+                        <option>4rem</option>
+                        <option>4em</option>
+                        <option>10vh</option>
+                        <option>10vw</option>
+                    </select>
+                </div>
 
-                            <div>
-                                <label for="demo-speed">speed</label>
-                                <select id="demo-speed" onchange="change(event, 'speed')">
-                                    <option selected value=".5s">.5s (Default)</option>
-                                    <option>250ms</option>
-                                    <option>1s</option>
-                                    <option>2</option>
-                                </select>
-                            </div>
-                        </section>
-                    </section>
+                <div>
+                    <label for="demo-speed">speed</label>
+                    <select id="demo-speed" onchange="change(event, 'speed')">
+                        <option selected value=".5s">.5s (Default)</option>
+                        <option>250ms</option>
+                        <option>1s</option>
+                        <option>2</option>
+                    </select>
+                </div>
+            </section>
 
-                    <section class="row">
-                        <div>
-                            <label for="demo-orient">orient</label>
-                            <select size="4" id="demo-orient" onchange="change(event, 'orient')">
-                                <option value="row">row (default)</option>
-                                <option>row-reverse</option>
-                                <option>column</option>
-                                <option>column-reverse</option>
-                            </select>
-                        </div>
+            <section class="row">
+                <div>
+                    <label for="demo-slot">Icon (slot)</label>
+                    <select id="demo-slot" size="4" onchange="change(event, 'slot')">
+                        <option selected value="default">menu icon (Default)</option>
+                        <option>button</option>
+                        <option>image</option>
+                        <option>image w/ caption</option>
+                    </select>
+                </div>
 
-                        <div>
-                            <label for="demo-position">position</label>
-                            <select size="4" id="demo-position" onchange="change(event, 'position')">
-                                <option value="start">start (Default)</option>
-                                <option>end</option>
-                                <option>center</option>
-                                <option>stretch</option>
-                            </select>
-                        </div>
-                    </section>
-                </section>
-            </details>
+                <div>
+                    <label for="demo-orient">orient</label>
+                    <select size="4" id="demo-orient" onchange="change(event, 'orient')">
+                        <option selected value="row">row (default)</option>
+                        <option>row-reverse</option>
+                        <option>column</option>
+                        <option>column-reverse</option>
+                    </select>
+                </div>
 
-            <details open class="fb480">
-            <summary>Slots / CSS Properties</summary>
-                <section class="row fb480">
-                    <section class="flex1">
-                        <div>
-                            <label for="demo-icon-slot">icon (slot)</label>
-                            <select id="demo-icon-slot">
-                                <option value="default">Default</option>
-                                <option value="none">None</option>
-                                <option value="button">Button</option>
-                                <option value="image">Image</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label for="demo-height-css">--height</label>
-                            <select id="demo-height-css" onchange="change(event, '--height')">
-                                <option value="45px">45px (Default)</option>
-                                <option>20px</option>
-                                <option>4rem</option>
-                                <option>100%</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label for="demo-speed-css">--speed</label>
-                            <select id="demo-speed-css" onchange="change(event, '--speed')">
-                                <option value=".5s">.5s (Default)</option>
-                                <option>250ms</option>
-                                <option>1s</option>
-                                <option>2</option>
-                            </select>
-                        </div>
-                    </section>
-
-                    <section class="row">
-                        <div>
-                            <label for="demo-orient-css">--orient</label>
-                            <select size="4" id="demo-orient-css" onchange="change(event, '--orient')">
-                                <option selected value="row">row (Default)</option>
-                                <option>column</option>
-                                <option>column-reverse</option>
-                                <option>row-reverse</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label for="demo-align-css">--align</label>
-                            <select size="4" id="demo-align-css" onchange="(event, '--align')">
-                                <option selected value="start">start (Default)</option>
-                                <option>end</option>
-                                <option>center</option>
-                                <option>stretch</option>
-                            </select>
-                        </div>
-                    </section>
-                </section>
-            </details>
+                <div>
+                    <label for="demo-position">position</label>
+                    <select size="4" id="demo-position" onchange="change(event, 'position')">
+                        <option selected value="start">start (Default)</option>
+                        <option>end</option>
+                        <option>center</option>
+                        <option>stretch</option>
+                    </select>
+                </div>
+            </section>
         </section>
-
     </wijit-form>
 
     <section id="demo-section">
-        <wijit-reveal active id="demo-item" toggle="false">
+        <wijit-reveal id="demo-item" toggle="false" orient="column">
             <div class="demo-content">
-                <h2>Something Crazy</h2>
+                <strong>Something Crazy</strong>
             </div>
         </wijit-reveal>
     </section>
