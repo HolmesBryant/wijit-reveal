@@ -1,62 +1,130 @@
+/**
+ * @class WijitReveal
+ * @extends HTMLElement
+ * @description A web component that reveals content based on a toggle mechanism.
+ * @author Holmes Bryant <https://github.com/HolmesBryant>
+ * @license GPL-3.0
+ */
 export class WijitReveal extends HTMLElement {
+  /**
+   * @private
+   * @type {AbortController}
+   */
   abortController = new AbortController();
+
+  /**
+   * @private
+   * @type {boolean}
+   */
   #active = false;
-  #position = 'start';
-  #height = '45px';
+
+  /**
+   * @private
+   * @type {string}
+   */
+  #gap = '.5rem';
+
+  /**
+   * @private
+   * @type {string}
+   */
+  #width = '45px';
+
+  /**
+   * @private
+   * @type {string}
+   */
   #orient = 'row';
+
+  /**
+   * @private
+   * @type {string}
+   */
+  #position = 'start';
+
+  /**
+   * @private
+   * @type {string}
+   */
   #speed = '1s';
+
+  /**
+   * @private
+   * @type {boolean}
+   */
   #toggle = true;
-  allowed = {
+
+  /**
+   * @public
+   * @readonly
+   * @type {Set<string|null>}
+   */
+  static allowed = {
     active: new Set([null, true, false, '', 'true', 'false']),
     position: new Set(['center', 'end', 'start', 'stretch']),
     orient: new Set(['column', 'column-reverse', 'row', 'row-reverse']),
     toggle: new Set([null, true, false, '', 'true', 'false']),
-  }
-  static observedAttributes = ['active', 'position', 'height', 'orient', 'toggle', 'speed'];
+  };
 
+  /**
+   * @public
+   * @readonly
+   * @type {string[]}
+   */
+  static observedAttributes = ['active', 'gap', 'width', 'orient', 'position', 'speed', 'toggle'];
+
+  /**
+   * @constructor
+   */
   constructor() {
     super();
     this.attachShadow( {mode:'open'} );
     this.shadowRoot.innerHTML = `
       <style>
         :host {
-          --position: ${this.position};
-          --height: ${this.height};
+          --gap: ${this.gap};
+          --width: ${this.width};
           --orient: ${this.orient};
+          --position: ${this.position};
           --speed: ${this.speed};
           position: relative;
           width: 100%;
+          max-width: 100%;
+        }
 
-          border: 1px solid purple;
+        slot[name="icon"]::slotted(*) {
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
         }
 
         input + #icon:hover {
           box-shadow: 2px 2px 5px black;
         }
 
-        input + #icon:active,
-        input:checked + #icon {
+        input + #icon:active {
           box-shadow: inset 2px 2px 5px black;
         }
 
         label {
           cursor: pointer;
           flex: 0;
-          min-height: var(--height);
-          min-width: var(--height);
+          min-height: var(--width);
+          min-width: var(--width);
         }
 
         label:has(input:checked) ~ #content {
           flex: 2;
+          max-height: 100vh;
           opacity: 1;
+          overflow: visible;
         }
 
         main {
+          align-items: var(--position);
           display: flex;
           flex-direction: var(--orient);
-          align-items: var(--position);
-          gap: 1rem;
-          height: 100%;
+          gap: var(--gap);
         }
 
         svg {
@@ -65,15 +133,16 @@ export class WijitReveal extends HTMLElement {
         }
 
         #content {
-          flex: 0;
-          opacity: 1;
+          flex: 0 1 0;
+          opacity: 0;
           overflow: hidden;
           transition: all var(--speed);
           width: 100%;
+          max-height: 0vh;
         }
 
         #icon {
-          height: var(--height);
+          height: var(--width);
           width: 100%;
         }
 
@@ -110,17 +179,28 @@ export class WijitReveal extends HTMLElement {
     }, { signal:this.abortController.signal });
   }
 
+  /**
+   * @param {string} attr
+   * @param {string} oldval
+   * @param {string} newval
+   */
   attributeChangedCallback(attr, oldval, newval) {
-    if (this.allowed[attr] && !this.allowed[attr].has(newval)) {
-      const allowed = JSON.stringify(Array.from(this.allowed[attr].values()));
+    if (WijitReveal.allowed[attr] && !WijitReveal.allowed[attr].has(newval)) {
+      const allowed = JSON.stringify(Array.from(WijitReveal.allowed[attr].values()));
       console.error(`Value of "${attr}" must be one of ${allowed}. Value given was: ${newval}`)
       return false;
     }
     this[attr] = newval;
+    this.sendEvent(attr, oldval, newval);
   }
 
+  /**
+   * @override
+   */
   connectedCallback() {
     const links = this.querySelectorAll('a[href]');
+
+    /*use a MutationObserver to listen for changes in the content and add click handlers for newly added links.*/
     for (const link of links) {
       this.addClickhandler(link);
     }
@@ -128,10 +208,29 @@ export class WijitReveal extends HTMLElement {
     this.addWindowClickHandler();
   }
 
+  /**
+   * @override
+   */
   disconnectedCallback() {
     this.abortController.abort();
   }
 
+  /**
+   * @private
+   * @param {string} attr
+   * @param {*} oldval
+   * @param {*} newval
+   */
+  sendEvent(attr, oldval, newval) {
+    const info = { attr:attr, old:oldval, new:newval };
+    const evt = new CustomEvent('wijitChanged', { detail:info });
+    window.dispatchEvent(evt);
+  }
+
+  /**
+   * @private
+   * @param {HTMLElement} elem
+   */
   addClickhandler(elem) {
     elem.addEventListener('click', event => {
       if (this.toggle) this.removeAttribute('active');
@@ -139,18 +238,32 @@ export class WijitReveal extends HTMLElement {
     }, { signal:this.abortController.signal });
   }
 
+  /**
+   * @private
+   */
   addWindowClickHandler() {
     window.addEventListener('click', event => {
       let isMenu = false;
       if (event.target === this || this.contains(event.target)) isMenu = true;
 
-      if (!isMenu && this.toggle) this.removeAttribute('active');
+      if (!isMenu && this.toggle) {
+        this.removeAttribute('active');
+      }
+
       event.stopPropagation();
     });
   }
 
+  /**
+   * @public
+   * @type {boolean}
+   */
   get active() { return this.#active; }
 
+  /**
+   * @public
+   * @param {boolean|string|null} value
+   */
   set active(value) {
     const input = this.shadowRoot.querySelector('input');
     switch(value) {
@@ -169,49 +282,106 @@ export class WijitReveal extends HTMLElement {
     this.#active = value;
   }
 
-  get position() { return this.#position; }
+  /**
+   * @public
+   * @type {string}
+   */
+  get gap() { return this.#gap; }
 
-  set position(value) {
-    const icon = this.shadowRoot.querySelector('#icon');
-    this.#position = value;
-    this.style.setProperty('--position', value);
-
-    for (const cls of this.allowed.position) {
-      icon.classList.remove(cls);
-    }
-
-    icon.classList.add(value);
+  /**
+   * @public
+   * @type {string}
+   */
+  set gap(value) {
+    this.#gap = value;
+    this.style.setProperty('--gap', value);
   }
 
-  get height() { return this.#height; }
+  /**
+   * @public
+   * @type {string}
+   */
+  get width() { return this.#width; }
 
-  set height(value) {
-    this.#height = value;
-    this.style.setProperty('--height', value);
+  /**
+   * @public
+   * @type {string}
+   */
+  set width(value) {
+    this.#width = value;
+    this.style.setProperty('--width', value);
   }
 
+  /**
+   * @public
+   * @type {string}
+   */
   get orient() { return this.#orient; }
 
+  /**
+   * @public
+   * @type {string}
+   */
   set orient(value) {
     const icon = this.shadowRoot.querySelector('#icon');
     this.#orient = value;
     this.style.setProperty('--orient', value);
 
-    for (const cls of this.allowed.orient) {
-      icon.classList.remove(cls);
+    for (const cls of WijitReveal.allowed.orient) {
+      if (icon) icon.classList.remove(cls);
     }
 
     icon.classList.add(value);
   }
 
-  get speed() { return this.#speed; }
+  /**
+   * @public
+   * @type {string}
+   */
+  get position() { return this.#position; }
 
-  set speed(value) {
-    this.#speed = value;
+  /**
+   * @public
+   * @type {string}
+   */
+  set position(value) {
+    const icon = this.shadowRoot.querySelector('#icon');
+    this.#position = value;
+    this.style.setProperty('--position', value);
+
+    for (const cls of WijitReveal.allowed.position) {
+      icon.classList.remove(cls);
+    }
+
+    if (icon) icon.classList.add(value);
   }
 
+  /**
+   * @public
+   * @type {string}
+   */
+  get speed() { return this.#speed; }
+
+  /**
+   * @public
+   * @type {string|number}
+   */
+  set speed(value) {
+    if (/\d+$/.test(value)) value += 's';
+    this.#speed = value;
+    this.style.setProperty('--speed', value);
+  }
+
+  /**
+   * @public
+   * @type {boolean}
+   */
   get toggle() { return this.#toggle; }
 
+  /**
+   * @public
+   * @param {boolean|string|null} value
+   */
   set toggle(value) {
     switch(value) {
     case false:

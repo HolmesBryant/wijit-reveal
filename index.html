@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Wijit-Menu</title>
     <script defer src="extra/scripts.js"></script>
-    <script type="module" src="extra/wijit-form.js"></script>
+    <script type="module" src="extra/wijit-form.min.js"></script>
     <script type="module" src="src/wijit-reveal.js"></script>
+    <script type="module" src="extra/wijit-code.min.js"></script>
     <link rel="stylesheet" href="extra/styles.css">
     <link rel="stylesheet" href="extra/menu.css">
     <style>
@@ -15,19 +16,21 @@
             color: var(--accent);
         }
 
-        #demo-section {
+        wijit-reveal#demo {
+            padding: 1rem;
         }
 
-        #demo-item {
+        .content {
+            background: var(--bg1-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            max-width: 100%;
+            overflow: auto;
+            padding: 1rem;
         }
 
-        .demo-content {
-            background-image: linear-gradient(mediumaquamarine, teal);
-            border: 1px solid cyan;
-            white-space: nowrap;
-/*            height: 100px;*/
-/*            width: 100%;*/
-            position: absolute;
+        #demo wijit-code {
+            display: block;
         }
 
     </style>
@@ -49,17 +52,17 @@
             <section class="row space-around">
                 <div>
                     <label for="demo-active">active</label>
-                    <input type="checkbox" id="demo-active" onchange="change(event, 'active')">
+                    <input checked type="checkbox" id="demo-active" onchange="change(event, 'active')">
                 </div>
 
                 <div>
                     <label for="demo-toggle">toggle</label>
-                    <input checked type="checkbox" id="demo-toggle" onchange="change(event, 'toggle')">
+                    <input type="checkbox" id="demo-toggle" onchange="change(event, 'toggle')">
                 </div>
 
                 <div>
-                    <label for="demo-height">height</label>
-                    <select id="demo-height" onchange="change(event, 'height')">
+                    <label for="demo-width">width</label>
+                    <select id="demo-width" onchange="change(event, 'width')">
                         <option selected value="45px">45px (Default)</option>
                         <option>20px</option>
                         <option>4rem</option>
@@ -76,21 +79,12 @@
                         <option>250ms</option>
                         <option>1s</option>
                         <option>2</option>
+                        <option>0.2</option>
                     </select>
                 </div>
             </section>
 
             <section class="row">
-                <div>
-                    <label for="demo-slot">Icon (slot)</label>
-                    <select id="demo-slot" size="4" onchange="change(event, 'slot')">
-                        <option selected value="default">menu icon (Default)</option>
-                        <option>button</option>
-                        <option>image</option>
-                        <option>image w/ caption</option>
-                    </select>
-                </div>
-
                 <div>
                     <label for="demo-orient">orient</label>
                     <select size="4" id="demo-orient" onchange="change(event, 'orient')">
@@ -110,131 +104,303 @@
                         <option>stretch</option>
                     </select>
                 </div>
+
+                <div>
+                    <label for="demo-slot">Icon (slot)</label>
+                    <select id="demo-slot" size="4" onchange="change(event, 'icon')">
+                        <option selected value="default">menu icon (Default)</option>
+                        <option>button</option>
+                        <option>image</option>
+                    </select>
+                </div>
             </section>
         </section>
     </wijit-form>
 
-    <section id="demo-section">
-        <wijit-reveal id="demo-item" toggle="false" orient="column">
-            <div class="demo-content">
-                <strong>Something Crazy</strong>
+    <section id="container">
+        <wijit-reveal id="demo" active toggle="false">
+            <div class="content">
+                <wijit-code highlight>
+                    <textarea>
+                    <section id="container">
+                    </textarea>
+                </wijit-code>
+
+                <wijit-code highlight id="demo-changes">
+                    <textarea>
+                    <wijit-reveal active toggle="false">
+                    </textarea>
+                </wijit-code>
+
+                <wijit-code highlight>
+                    <textarea>
+                        <div>content...</div>
+                        </wijit-reveal>
+                        </section>
+                    </textarea>
+                </wijit-code>
             </div>
         </wijit-reveal>
     </section>
 
 
     <h2>Examples</h2>
-    <!-- <section class="column">
+    <section class="column" style="position:relative">
+        <!-- basic -->
         <div class="card">
-            <header><h4>Horizontal Menu</h4></header>
+            <header>
+                <h3>Basic Example: <small>Click icon to see effect</small></h3>
+            </header>
 
-            <wijit-reveal orient="row" align="start">
-                <menu class="wmenu ribbon">
-                    <li>
-                        <a href="#">Home</a>
-                    </li>
-                    <li>
-                        <label>
-                            <a href="#">About Us</a>
-                            <input aria-hidden="true" type="checkbox" name="menu1">
-                        </label>
-                        <menu>
-                            <li> <a href="#">About 1</a> </li>
-                            <li> <a href="#">About 2</a> </li>
-                            <li> <a href="#">About 3</a> </li>
-                            <li> <a href="#">About 4</a> </li>
-                            <li> <a href="#">About 5</a> </li>
-                            <li> <a href="#">About 6</a> </li>
-                        </menu>
-                    </li>
-                    <li>
-                        <label>
-                            <a href="#">Services</a>
-                            <input aria-hidden="true" type="checkbox" name="menu1">
-                        </label>
-                        <menu>
-                            <li> <a href="#">Services 1</a> </li>
-                            <li> <a href="#">Services 2</a> </li>
-                            <li>
-                                <label>
-                                    <input aria-hidden="true" type="checkbox" name="menu1">
-                                    <a href="#">Portfolio</a>
-                                </label>
-                                <menu>
-                                    <li> <a href="#">Example One</a></li>
-                                    <li> <a href="#">Example Two</a></li>
-                                    <li> <a href="#">Example Three</a></li>
-                                    <li> <a href="#">Example Four</a></li>
-                                    <li> <a href="#">Example Five</a></li>
-                                    <li> <a href="#">Example Six</a></li>
-                                    <li> <a href="#">Example Seven</a></li>
-                                </menu>
-                            </li>
-                        </menu>
-                    </li>
-                    <li><a href="#">Downloads</a></li>
-                    <li><a href="#">Support</a></li>
-                </menu>
+            <wijit-reveal>
+                <div class="content">
+                    <wijit-code highlight>
+                        <textarea>
+                            <wijit-reveal>
+                            ...
+                            </wijit-reveal>
+                        </textarea>
+                    </wijit-code>
+
+                    <h1>Hello World!</h1>
+                </div>
             </wijit-reveal>
         </div>
 
+        <!-- Row-Reverse -->
         <div class="card">
-            <header><h4>Vertical Menu</h4></header>
-
-            <wijit-reveal active orient="column" align="center">
-                <menu class="wmenu">
-                    <li>
-                        <a href="#">Home</a>
-                    </li>
-                    <li>
-                        <label>
-                            <input aria-hidden="true" type="checkbox" name="level1">
-                            <a href="#">About Us</a>
-                        </label>
-                        <menu>
-                            <li> <a href="#">About 1</a> </li>
-                            <li> <a href="#">About 2</a> </li>
-                            <li> <a href="#">About 3</a> </li>
-                            <li> <a href="#">About 4</a> </li>
-                            <li> <a href="#">About 5</a> </li>
-                            <li> <a href="#">About 6</a> </li>
-                        </menu>
-                    </li>
-                    <li>
-                        <label>
-                            <input aria-hidden="true" type="checkbox" name="level1">
-                            <a>Services</a>
-                        </label>
-                        <menu>
-                            <li> <a href="#">Services 1</a> </li>
-                            <li> <a href="#">Services 2</a> </li>
-                            <li>
-                                <label>
-                                    <input aria-hidden="true" type="checkbox" name="level2">
-                                    <a href="#">Portfolio</a>
-                                </label>
-                                <menu>
-                                    <li> <a href="#">Example One</a></li>
-                                    <li> <a href="#">Example Two</a></li>
-                                    <li> <a href="#">Example Three</a></li>
-                                    <li> <a href="#">Example Four</a></li>
-                                </menu>
-                            </li>
-                        </menu>
-                    </li>
-                    <li><a href="#">Downloads</a></li>
-                    <li>
-                        <label>
-                            <input type="checkbox" aria-hidden="true">
-                            <a href="#">Support</a>
-                        </label>
-                        <menu>
-                            <li><a>foo</a></li>
-                        </menu>
-                    </li>
-                </menu>
+            <header><h3>Row, orient = row-reverse</h3></header>
+            <wijit-reveal orient="row-reverse">
+                <div class="content">
+                    <wijit-code highlight>
+                        <textarea>
+                            <wijit-reveal orient="row-reverse">
+                                <div>...</div>
+                            </wijit-reveal>
+                        </textarea>
+                    </wijit-code>
+                </div>
             </wijit-reveal>
         </div>
-    </section> -->
+
+        <!-- Position End -->
+        <div class="card">
+            <header><h3>Row, position = end</h3></header>
+            <wijit-reveal position="end">
+                <div class="content">
+                    <wijit-code highlight>
+                        <textarea>
+                            <wijit-reveal position="end">
+                                <p>...</p>
+                            </wijit-reveal>
+                        </textarea>
+                    </wijit-code>
+
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+            </wijit-reveal>
+        </div>
+
+        <!-- Stretch -->
+        <div class="card">
+            <header><h3>Row, position = stretch</h3></header>
+            <wijit-reveal position="stretch">
+                <div class="content">
+                    <wijit-code highlight>
+                        <textarea>
+                            <wijit-reveal position="stretch">
+                                <p>...</p>
+                            </wijit-reveal>
+                        </textarea>
+                    </wijit-code>
+
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </wijit-reveal>
+            </div>
+        </div>
+
+        <!-- Column -->
+        <div class="card">
+            <header><h3>Column</h3></header>
+            <wijit-reveal orient="column">
+                <div class="content">
+                    <wijit-code highlight>
+                        <textarea>
+                            <wijit-reveal orient="column">
+                                <p>...</p>
+                            </wijit-reveal>
+                        </textarea>
+                    </wijit-code>
+
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+            </wijit-reveal>
+        </div>
+
+        <!-- Column-Reverse -->
+        <div class="card">
+            <header><h3>Column, orient = column-reverse</h3></header>
+            <wijit-reveal orient="column-reverse">
+                <div class="content">
+                    <wijit-code highlight>
+                        <textarea>
+                            <wijit-reveal orient="column-reverse">
+                                <p>...</p>
+                            </wijit-reveal>
+                        </textarea>
+                    </wijit-code>
+
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+            </wijit-reveal>
+        </div>
+
+        <!-- Column End -->
+        <div class="card">
+            <header><h3>Column, position = end</h3></header>
+            <wijit-reveal orient="column" position="end">
+                <div class="content">
+                    <wijit-code highlight>
+                        <textarea>
+                            <wijit-reveal orient="column" position="end">
+                                <p>...</p>
+                            </wijit-reveal>
+                        </textarea>
+                    </wijit-code>
+
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+            </wijit-reveal>
+        </div>
+
+        <!-- Column Stretch -->
+        <div class="card">
+            <header><h3>Column, position = stretch</h3></header>
+            <wijit-reveal orient="column" position="stretch">
+                <div class="content">
+                    <wijit-code highlight>
+                        <textarea>
+                            <wijit-reveal orient="column" position="stretch">
+                                <p>...</p>
+                            </wijit-reveal>
+                        </textarea>
+                    </wijit-code>
+
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+            </wijit-reveal>
+        </div>
+
+        <!-- button trigger -->
+        <div class="card">
+            <header><h3>Use Button as Trigger</h3></header>
+            <wijit-reveal gap="2rem"  width="75px">
+                <div class="content">
+                    <wijit-code highlight>
+                        <textarea>
+                            <wijit-reveal gap="2rem"  width="75px">
+                            <input type="button" slot="icon" value="Click Me">
+                            <p>...</p>
+                        </wijit-reveal>
+                        </textarea>
+                    </wijit-code>
+
+                    <input type="button" slot="icon" value="Click Me">
+                </div>
+            </wijit-reveal>
+        </div>
+
+        <!-- image trigger -->
+        <div class="card">
+            <header> <h3>Use Image as Trigger</h3> </header>
+
+            <wijit-reveal width="75px">
+                <div class="content">
+                    <wijit-code highlight>
+                        <textarea>
+                            <wijit-reveal width="75px">
+                                <img slot="icon" src="...">
+                                <p>...</p>
+                            </wijit-reveal>
+                        </textarea>
+                    </wijit-code>
+
+                    <img slot="icon" src="extra/marine-iguana.jpg" alt="image trigger">
+                </div>
+            </wijit-reveal>
+        </div>
+
+        <!-- hide trigger -->
+        <div class="card">
+            <style>
+                #hidetrigger::part(icon) {
+                    box-shadow: none;
+                    cursor: default;
+                }
+            </style>
+            <header><h3>Hide the trigger</h3></header>
+
+            <wijit-reveal active toggle="false" id="hidetrigger">
+                <div class="content">
+                    <wijit-code highlight>
+                        <textarea>
+                            <style>
+                                #hidetrigger::part(icon) {
+                                    box-shadow: none;
+                                    cursor: default;
+                                }
+                            </style>
+
+                            <wijit-reveal active toggle="false" id="hidetrigger">
+                                <span slot="icon"></span>
+                                <p>...</p>
+                            </wijit-reveal>
+                        </textarea>
+                    </wijit-code>
+
+                    <span slot="icon"></span>
+                    <p class="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+            </wijit-reveal>
+        </div>
+    </section>
+
+    <template id="button-template">
+        <input type="button" slot="icon" value="Click Me">
+    </template>
+
+    <template id="image-template">
+        <img slot="icon" src="extra/marine-iguana.jpg" alt="image trigger">
+    </template>
 </body>
 </html>

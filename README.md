@@ -1,19 +1,24 @@
 # Wijit-Reveal Web Component
 
-A web component that displays a user-definable element (such as an icon) which reveals another element when clicked.
+A web component that displays a user-definable element (such as an icon) which reveals some user-defined content when clicked.
 
 Demo: [https://holmesbryant.github.io/wijit-reveal/](https://holmesbryant.github.io/wijit-reveal/)
 
 ## Features
-- Allows you to provide a graphic or HTML element to use as the trigger. The default trigger is a hamburger menu icon.
-- You can hide the trigger altogether and instead toggle the content visibility by adding and removing the "active" atribute.
-- The icon can be above, below, to the left, or to the right of the content.
+- Displays an element (the trigger) which, when clicked, reveals some content.
+- Allows you to provide your own graphic or HTML element to use as the trigger. The default trigger is a hamburger menu icon.
+- You can hide the trigger altogether and instead toggle the content visibility by adding and removing the "active" attribute.
+- The trigger can be above, below, to the left, or to the right of the content.
+- The trigger can be centered, left/top aligned, right/bottom aligned or stretched relative to the content.
 - You can set the speed at which the content appears or disappears.
-- Automatically adds event listeners to hide the content when you click somewhere outside the custom element, or when you click on a link inside the custom element. This feature can be turned off.
+- You can change the gap between the trigger and the content.
+- You can change the size of the trigger.
+- By default, the content automatically hides when you click anywhere outside the component, or if you click on a link inside the component. However, this feature can be turned off.
+- Dispatches a custom event (wijitChanged) to the Window when an attribute changes. The event provides a "detail" property which includes the attribute name (detail.attr), old value (detail.old) and new value (detail.new).
 
 ## Usage
 
-Include the script tag in your HTTML page.
+Add the script tag. Be sure to include `type="module"`.
 
     <script type="module" src="wijit-reveal.js"></script>
 
@@ -28,24 +33,27 @@ Include the custom element in the body, and add your content.
     </wijit-reveal>
 
 ## Attributes
-- **active**
-    - Add this attribute to make the content visible. Null, true, '' and 'true' are true. False and 'false' are false.
-    - Acceptable values: [null, true, false, '', 'true', 'false']
-- **orient**
+- **active** (default: false)
+    - Add/remove this attribute to show/hide the content.
+    - Acceptable values: [null, ' ', true, 'true', false, 'false'] ( False and "false" are false. All other values are true.)
+- **gap** (default: '.5rem')
+    - Determines the gap between the trigger and the content.
+    - Acceptable values: Any value compatible with the CSS `gap` property.
+- **width** (default: '45px')
+    - Influences the width of the icon and the minimum height of the content.
+    - Acceptable values: Values which use CSS measurements that define explicit units, such as `45px`, `3rem`, `6ch`, `6vh` etc. Percentage measurements and values like `max-content` will probably not produce desirable results.
+- **orient** (default: 'row')
     - Determines the positional relationship between the trigger and the content. "column" places the trigger above the content. "column-reverse" places it below the content. "row" places the trigger to the left of the content. "row-reverse" places it to the right.
     - Acceptable values: ['column', 'column-reverse', 'row', 'row-reverse']
-- **align**
-    - Provides additional poisitional control. Depending on the rest of the HTML and CSS of your page, some of these options may not have any effect. The general rule of thumb is that if "orient" is "column" or "column-reverse", "align" affects the left-right position of the trigger. If "orient" is "row" or "row-reverse", "align" affects the top-bottom position of the trigger. For example, if "orient" is "column" and "align" is "start", the trigger will be aligned with the left side of the content (in addition to being placed above it). And if "orient" is row and "align" is "start", the trigger will be aligned with the top of the content (as well as being placed to the left of it).
+- **position** (default: 'start')
+    - Provides additional poisitional control. Depending on the rest of the HTML and CSS of your page, some of these options may not have any effect. The general rule of thumb is that if `orient` is "column" or "column-reverse", `position` affects the left-right position of the trigger. If `orient` is "row" or "row-reverse", `position` affects the top-bottom position of the trigger. For example, if `orient` is "column" and `position` is "start", the trigger will be aligned with the left edge of the content (in addition to being placed above it). And if `orient` is row and `position` is "start", the trigger will be aligned with the top edge of the content (as well as being placed to the left of it).
     - Acceptable values: ['center', 'end', 'start', 'stretch']
-- **height**
-    - Determines the height/width of the icon and the minimum height of the content.
-    - Acceptable values: Any valid css height value EXCEPT percentage (%).
-- **toggle**
+- **speed** (default: '.5s')
+    - Determines the speed at which the show/hide transition happens.
+    - Acceptable values: Any value compatible with the CSS `transition-duration` property. In addition, a simple integer or float may be used, in which case it will be interpreted as "seconds".
+- **toggle** (default: true)
     - Determines whether the content is hidden when you click somewhere outside of the custom element, or when you click on a link inside the custom element.
-    - Acceptable values: [null, true, false, '', 'true', 'false']
-- **speed**
-    - Determines the speed at which the visible/hidden transition happens.
-    - Acceptable values: Any valid css transition speed.
+    - Acceptable values: [null, ' ', 'true', true, 'false', false] ( False and "false" are false. All other values are true.)
 
 ## Slots
 
@@ -58,17 +66,15 @@ Include the custom element in the body, and add your content.
     <wijit-reveal>
         <button slot="icon">Click Me</button>
         <div>
-            Your Content
-            ...
+            Your Content...
         </div>
     </wijit-reveal>
 
-    <!-- Eliminate the icon altogether -->
+    <!-- Hide the icon -->
     <wijit-reveal>
         <span slot="icon"></span>
         <div>
-            Your Content
-            ...
+            Your Content...
         </div>
     </wijit-reveal>
 
@@ -78,24 +84,22 @@ This component exposes several custom css properties which affect the behavior o
 
 ### Note
 
-These properties have analogs in the available custom attributes. The attribute value always takes precedence over the css property value.
+These properties have analogs in the available custom attributes. The attribute value usually takes precedence over the css property value.
 
     /* Example */
     <style>
       wijit-reveal {
-        --align: start;
-        --height: 45px;
+        --gap: .5rem;
+        --width: 45px;
         --orient: row;
+        --position: start;
         --speed: .5s
       }
     </style>
 
-- **--align** See the "align" attribute.
-- **--height** See the "height" attribute.
+- **--gap** See the "gap" attribute.
+- **--width** See the "width" attribute.
 - **--orient** See the "orient" attribute.
+- **--position** See the "position" attribute.
 - **--speed** See the "speed" attribute.
-
-## Examples
-
-###
 
