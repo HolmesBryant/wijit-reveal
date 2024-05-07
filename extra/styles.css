@@ -48,7 +48,8 @@ body {
   { background-color: var(--bg2-color) }
 
   .card,
-  button
+  button,
+  pre
   { background-color: var(--bg3-color) }
 
   button:hover,
@@ -60,11 +61,13 @@ body {
 /**** Borders ****/
   button,
   details,
+  pre,
   .card
   { border: 1px solid var(--border-color); }
 
   article,
   details,
+  pre,
   section,
   summary,
   .card
@@ -150,8 +153,11 @@ body {
   header
   { flex: 0; }
 
-  ul, ol
-  { margin: 0; }
+  ol, ul
+  {
+    list-style: inside;
+    margin: 0;
+  }
 
   section {
     display: flex;
@@ -170,11 +176,7 @@ body {
   }
 
   .card {
-/*    align-items: center;*/
-/*    display: flex;*/
     flex: 1;
-/*    flex-direction: column;*/
-/*    flex-wrap: wrap;*/
     padding: 1rem;
   }
 

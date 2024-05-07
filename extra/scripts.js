@@ -1,3 +1,5 @@
+ import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+
 function switchIcon(elem, slot, value) {
   let tmpl;
 
@@ -65,7 +67,18 @@ function getReadme () {
   .then (response => response.text())
   .then (text => {
     elem.textContent = text;
+    return text
+  })
+  .then (text => {
+    const timer = setInterval(() => {
+      const isLoaded = marked ?? false;
+      if (isLoaded) {
+        clearInterval(timer);
+        elem.innerHTML = marked.parse(text);
+      }
+    }, 500)
   });
 }
 
 getReadme();
+window.change = change;
