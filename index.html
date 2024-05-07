@@ -9,7 +9,6 @@
     <script type="module" src="src/wijit-reveal.js"></script>
     <script type="module" src="extra/wijit-code.min.js"></script>
     <link rel="stylesheet" href="extra/styles.css">
-    <link rel="stylesheet" href="extra/menu.css">
     <style>
         wijit-reveal[active]::part(icon),
         wijit-reveal::part(icon):hover {
@@ -24,9 +23,13 @@
             background: var(--bg1-color);
             border: 1px solid var(--border-color);
             border-radius: 1rem;
-            max-width: 100%;
+            box-sizing: border-box;
             overflow: auto;
             padding: 1rem;
+        }
+
+        wijit-code {
+            oveflow: auto;
         }
 
         #demo wijit-code {
@@ -66,7 +69,6 @@
                         <option selected value="45px">45px (Default)</option>
                         <option>20px</option>
                         <option>4rem</option>
-                        <option>4em</option>
                         <option>10vh</option>
                         <option>10vw</option>
                     </select>
@@ -117,15 +119,9 @@
         </section>
     </wijit-form>
 
-    <section id="container">
+    <section id="container" class="column">
         <wijit-reveal id="demo" active toggle="false">
             <div class="content">
-                <wijit-code highlight>
-                    <textarea>
-                    <section id="container">
-                    </textarea>
-                </wijit-code>
-
                 <wijit-code highlight id="demo-changes">
                     <textarea>
                     <wijit-reveal active toggle="false">
@@ -133,10 +129,9 @@
                 </wijit-code>
 
                 <wijit-code highlight>
-                    <textarea>
-                        <div>content...</div>
+                    <textarea>&nbsp;
+                            <div>content...</div>
                         </wijit-reveal>
-                        </section>
                     </textarea>
                 </wijit-code>
             </div>
@@ -218,13 +213,6 @@
                             </wijit-reveal>
                         </textarea>
                     </wijit-code>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </wijit-reveal>
             </div>
         </div>
@@ -241,13 +229,6 @@
                             </wijit-reveal>
                         </textarea>
                     </wijit-code>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </div>
             </wijit-reveal>
         </div>
@@ -264,13 +245,6 @@
                             </wijit-reveal>
                         </textarea>
                     </wijit-code>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </div>
             </wijit-reveal>
         </div>
@@ -287,13 +261,6 @@
                             </wijit-reveal>
                         </textarea>
                     </wijit-code>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </div>
             </wijit-reveal>
         </div>
@@ -310,13 +277,6 @@
                             </wijit-reveal>
                         </textarea>
                     </wijit-code>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </div>
             </wijit-reveal>
         </div>
@@ -324,18 +284,18 @@
         <!-- button trigger -->
         <div class="card">
             <header><h3>Use Button as Trigger</h3></header>
-            <wijit-reveal gap="2rem"  width="75px">
+            <wijit-reveal  width="75px" orient="column">
+                <input type="button" slot="icon" value="Click Me">
                 <div class="content">
                     <wijit-code highlight>
                         <textarea>
-                            <wijit-reveal gap="2rem"  width="75px">
+                            <wijit-reveal width="75px">
                             <input type="button" slot="icon" value="Click Me">
                             <p>...</p>
                         </wijit-reveal>
                         </textarea>
                     </wijit-code>
 
-                    <input type="button" slot="icon" value="Click Me">
                 </div>
             </wijit-reveal>
         </div>
@@ -344,7 +304,9 @@
         <div class="card">
             <header> <h3>Use Image as Trigger</h3> </header>
 
-            <wijit-reveal width="75px">
+            <wijit-reveal width="75px" orient="column">
+                <img slot="icon" src="extra/marine-iguana.jpg" alt="image trigger">
+
                 <div class="content">
                     <wijit-code highlight>
                         <textarea>
@@ -354,8 +316,6 @@
                             </wijit-reveal>
                         </textarea>
                     </wijit-code>
-
-                    <img slot="icon" src="extra/marine-iguana.jpg" alt="image trigger">
                 </div>
             </wijit-reveal>
         </div>
@@ -364,32 +324,26 @@
         <div class="card">
             <style>
                 #hidetrigger::part(icon) {
-                    box-shadow: none;
-                    cursor: default;
+                    display:none;
                 }
             </style>
             <header><h3>Hide the trigger</h3></header>
 
-            <wijit-reveal active toggle="false" id="hidetrigger">
+            <wijit-reveal active toggle="false" orient="column" id="hidetrigger">
                 <div class="content">
                     <wijit-code highlight>
                         <textarea>
                             <style>
                                 #hidetrigger::part(icon) {
-                                    box-shadow: none;
-                                    cursor: default;
+                                    display:none;
                                 }
                             </style>
 
                             <wijit-reveal active toggle="false" id="hidetrigger">
-                                <span slot="icon"></span>
-                                <p>...</p>
+                                ...
                             </wijit-reveal>
                         </textarea>
                     </wijit-code>
-
-                    <span slot="icon"></span>
-                    <p class="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </div>
             </wijit-reveal>
         </div>

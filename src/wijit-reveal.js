@@ -88,8 +88,6 @@ export class WijitReveal extends HTMLElement {
           --position: ${this.position};
           --speed: ${this.speed};
           position: relative;
-          width: 100%;
-          max-width: 100%;
         }
 
         slot[name="icon"]::slotted(*) {
@@ -113,11 +111,19 @@ export class WijitReveal extends HTMLElement {
           min-width: var(--width);
         }
 
+        label:has(input) ~ #content {
+          flex: 0 1 0%;
+          opacity: 0;
+          overflow: hidden;
+          transition: all var(--speed);
+          width: 100%;
+          max-height: 0vh;
+        }
+
         label:has(input:checked) ~ #content {
-          flex: 2;
+          flex: 2 1 100%;
           max-height: 100vh;
           opacity: 1;
-          overflow: visible;
         }
 
         main {
@@ -130,15 +136,6 @@ export class WijitReveal extends HTMLElement {
         svg {
           height: 100%;
           width: 100%;
-        }
-
-        #content {
-          flex: 0 1 0;
-          opacity: 0;
-          overflow: hidden;
-          transition: all var(--speed);
-          width: 100%;
-          max-height: 0vh;
         }
 
         #icon {
@@ -155,7 +152,7 @@ export class WijitReveal extends HTMLElement {
       <main part="main">
         <label aria-label="menu" title="menu" part="icon">
           <input hidden type="checkbox">
-          <div id="icon" part="icon" class="${this.orient} ${this.position}">
+          <div id="icon" class="${this.orient} ${this.position}">
             <slot name="icon">
               <svg viewBox="0 6 12 12" preserveAspectRatio="none">
                 <path fill="currentColor" d="M0 6H20V8H0V6zM0 11H20V13H0V11zM0 16H20V18H0V16z"/>
@@ -198,13 +195,7 @@ export class WijitReveal extends HTMLElement {
    * @override
    */
   connectedCallback() {
-    const links = this.querySelectorAll('a[href]');
-
-    /*use a MutationObserver to listen for changes in the content and add click handlers for newly added links.*/
-    for (const link of links) {
-      this.addClickhandler(link);
-    }
-
+    this.addClickhandler();
     this.addWindowClickHandler();
   }
 
@@ -229,12 +220,14 @@ export class WijitReveal extends HTMLElement {
 
   /**
    * @private
-   * @param {HTMLElement} elem
    */
-  addClickhandler(elem) {
-    elem.addEventListener('click', event => {
-      if (this.toggle) this.removeAttribute('active');
-      event.stopPropagation();
+  addClickhandler() {
+    this.addEventListener('click', event => {
+      if (
+        event.target.localName === 'a' &&
+        !!event.target.href &&
+        this.toggle
+      ) this.removeAttribute('active');
     }, { signal:this.abortController.signal });
   }
 

@@ -70,12 +70,20 @@ Include the custom element in the body, and add your content.
         </div>
     </wijit-reveal>
 
-    <!-- Hide the icon -->
+    <!-- Hide the icon but reserve space for it -->
     <wijit-reveal>
         <span slot="icon"></span>
-        <div>
-            Your Content...
-        </div>
+        ...
+    </wijit-reveal>
+
+    <!-- Hide the icon altogether -->
+    <style>
+        wijit-reveal::part(icon) {
+            display: none;
+        }
+    </style>
+    <wijit-reveal>
+        ...
     </wijit-reveal>
 
 ## CSS Custom Properties

@@ -1,20 +1,5 @@
-function change(evt, attr) {
-  const el = document.querySelector('#demo');
-  const slot = el.querySelector('[slot=icon]');
-  const dest = document.querySelector('#demo-changes');
-
-  let value = evt.target.value;
-
-  if (evt.target.type && evt.target.type === 'checkbox') {
-    value = (event.target.checked) ? 'true' : 'false';
-  }
-
-  if ( attr.startsWith( '--' ) ) {
-    el.style.setProperty(attr, value);
-  } else if (attr === 'caption') {
-    el.innerHTML = evt.target.value;
-  } else if (attr === 'icon') {
-    let tmpl;
+function switchIcon(elem, slot, value) {
+  let tmpl;
 
     switch (value) {
     case 'button':
@@ -30,23 +15,45 @@ function change(evt, attr) {
     if (slot && tmpl) {
       slot.replaceWith(tmpl);
     } else if (tmpl) {
-      el.append(tmpl);
+      elem.append(tmpl);
     }
+}
 
-  } else {
-    el.setAttribute( attr, value );
-  }
-
-  const clone = el.cloneNode();
+function updateCodeExample(elem, target) {
+  const clone = elem.cloneNode();
   clone.removeAttribute('style');
   let cloneStr = clone.outerHTML;
   cloneStr = cloneStr.substr(0, cloneStr.indexOf('</wijit-reveal>'));
-  const iconStr = el.children[1]? el.children[1].outerHTML : '';
+  const iconStr = elem.children[1]? elem.children[1].outerHTML : '';
   const str = `
   ${cloneStr}
     ${iconStr}
   `;
-  dest.textContent = str;
+  target.textContent = str;
+}
+
+function change(evt, attr) {
+  const elem = document.querySelector('#demo');
+  const slot = elem.querySelector('[slot=icon]');
+  const target = document.querySelector('#demo-changes');
+
+  let value = evt.target.value;
+
+  if (evt.target.type && evt.target.type === 'checkbox') {
+    value = (event.target.checked) ? 'true' : 'false';
+  }
+
+  if ( attr.startsWith( '--' ) ) {
+    elem.style.setProperty(attr, value);
+
+  } else if (attr === 'icon') {
+    switchIcon(elem, slot, value);
+
+  } else {
+    elem.setAttribute( attr, value );
+  }
+
+  updateCodeExample(elem, target);
 }
 
 /**
