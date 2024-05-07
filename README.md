@@ -1,4 +1,4 @@
-# Wijit-Reveal Web Component
+<h1>Wijit-Reveal Web Component</h1>
 
 A web component that displays a user-definable element (such as an icon) which reveals some user-defined content when clicked.
 
