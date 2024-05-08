@@ -133,6 +133,10 @@ export class WijitReveal extends HTMLElement {
           gap: var(--gap);
         }
 
+        span {
+          display: block;
+        }
+
         svg {
           height: 100%;
           width: 100%;
@@ -152,13 +156,13 @@ export class WijitReveal extends HTMLElement {
       <main part="main">
         <label aria-label="menu" title="menu" part="icon">
           <input hidden type="checkbox">
-          <div id="icon" class="${this.orient} ${this.position}">
+          <span id="icon" class="${this.orient} ${this.position}">
             <slot name="icon">
               <svg viewBox="0 6 12 12" preserveAspectRatio="none">
                 <path fill="currentColor" d="M0 6H20V8H0V6zM0 11H20V13H0V11zM0 16H20V18H0V16z"/>
               </svg>
             </slot>
-          </div>
+          </span>
         </label>
 
         <div id="content" part="content">
@@ -177,6 +181,7 @@ export class WijitReveal extends HTMLElement {
   }
 
   /**
+   * @override
    * @param {string} attr
    * @param {string} oldval
    * @param {string} newval
@@ -196,7 +201,7 @@ export class WijitReveal extends HTMLElement {
    */
   connectedCallback() {
     this.addClickhandler();
-    this.addWindowClickHandler();
+    this.addDocumentClickHandler();
   }
 
   /**
@@ -229,21 +234,23 @@ export class WijitReveal extends HTMLElement {
         this.toggle
       ) this.removeAttribute('active');
     }, { signal:this.abortController.signal });
+
+    this.addEventListener('blur', event => {
+      if (this.toggle) this.removeAttribute('active');
+    }, { signal:this.abortController.signal });
   }
 
   /**
    * @private
    */
-  addWindowClickHandler() {
-    window.addEventListener('click', event => {
-      let isMenu = false;
-      if (event.target === this || this.contains(event.target)) isMenu = true;
+  addDocumentClickHandler() {
+    document.body.addEventListener('click', event => {
+      let isThis = false;
+      if (event.target === this || this.contains(event.target)) isThis = true;
 
-      if (!isMenu && this.toggle) {
+      if (!isThis && this.toggle) {
         this.removeAttribute('active');
       }
-
-      event.stopPropagation();
     });
   }
 
