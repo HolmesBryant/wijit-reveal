@@ -111,3 +111,8 @@ These properties have analogs in the available custom attributes. The attribute 
 - **--position** See the "position" attribute.
 - **--speed** See the "speed" attribute.
 
+## Events
+
+### WijitChanged
+
+Whenever an observed attribute is added, removed or changed, a custom event is dispatched to the **window**. This custom event has a `detail` property containing an object that has the name of the attribute (detail.attr), the old value (detail.oldval) and the new value (detail.newval).
